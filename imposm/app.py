@@ -19,7 +19,6 @@ import os
 import optparse
 import logging
 
-import multiprocessing
 from imposm.util import setproctitle
 
 try:
@@ -44,6 +43,12 @@ from imposm.db.config import DB
 from imposm.cache import OSMCache
 from imposm.reader import ImposmReader
 from imposm.mapping import TagMapper
+
+
+from imposm.monkey import patch_multiprocessing
+patch_multiprocessing()
+
+import multiprocessing
 
 try:
     n_cpu = multiprocessing.cpu_count()
