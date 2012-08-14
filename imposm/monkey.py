@@ -23,7 +23,7 @@ import multiprocessing.queues
 from multiprocessing.queues import Full
 
 def patch_multiprocessing():
-    if platform.python_version_tuple() > ('2', '6', '3'):
+    if platform.python_version_tuple() < ('2', '6', '3'):
         print 'Patching multiprocessing.'
         multiprocessing.process.Process._bootstrap = process__bootstrap
         multiprocessing.queues.JoinableQueue.put = joinable_queue_put
