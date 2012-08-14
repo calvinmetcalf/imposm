@@ -20,6 +20,7 @@ import itertools
 
 import multiprocessing.process
 import multiprocessing.queues
+import multiprocessing.forking
 from multiprocessing.queues import Full
 
 def patch_multiprocessing():
@@ -27,6 +28,7 @@ def patch_multiprocessing():
         print 'Patching multiprocessing.'
         multiprocessing.process.Process._bootstrap = process__bootstrap
         multiprocessing.queues.JoinableQueue.put = joinable_queue_put
+        multiprocessing.forking.Popen = forking_popen_poll
 
 
 # The following two methods are part of Python.
@@ -91,3 +93,21 @@ def joinable_queue_put(self, obj, block=True, timeout=None):
     finally:
         self._cond.release()
         self._notempty.release()
+
+# http://bugs.python.org/issue1731717
+# http://hg.python.org/cpython/rev/41aef062d529/
+def forking_popen_poll(self, flag=os.WNOHANG):
+    if self.returncode is None:
+        try:
+            pid, sts = os.waitpid(self.pid, flag)
+        except os.error:
+            # Child process not yet created. See #1731717
+            # e.errno == errno.ECHILD == 10
+            return None
+        if pid == self.pid:
+            if os.WIFSIGNALED(sts):
+                self.returncode = -os.WTERMSIG(sts)
+            else:
+                assert os.WIFEXITED(sts)
+                self.returncode = os.WEXITSTATUS(sts)
+    return self.returncode
