@@ -28,7 +28,7 @@ def patch_multiprocessing():
         print 'Patching multiprocessing.'
         multiprocessing.process.Process._bootstrap = process__bootstrap
         multiprocessing.queues.JoinableQueue.put = joinable_queue_put
-        multiprocessing.forking.Popen = forking_popen_poll
+        multiprocessing.forking.Popen.poll = forking_popen_poll
 
 
 # The following two methods are part of Python.
