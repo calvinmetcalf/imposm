@@ -590,7 +590,10 @@ class PseudoArea(FieldType):
     column_type = "REAL"
     
     def value(self, val, osm_elem):
-        area = osm_elem.geom.area
+    	try:
+        	area = osm_elem.geom.area
+        except AttributeError:
+        	return None
         if not area:
             return None
         

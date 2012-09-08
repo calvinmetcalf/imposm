@@ -111,7 +111,7 @@ admin = Polygons(
         ),
     },
     fields = (
-        ('admin_level', OneOfInt('1 2 3 4 5 6'.split())),
+        ('admin_level', OneOfInt('1 2 3 4 5 6 7 8'.split())),
     ),
 )
 
@@ -193,15 +193,32 @@ transport_points = Points(
     )}
 )
 
+shields = LineStrings(
+name = 'shields',
+fields = (
+('network', String()),
+('ref', String()),
+('symbol', String()),
+('name', String()),	
+('route', String()),	
+('z_order', WayZOrder()),
+    ),
+mapping = {
+'type': (
+'route',
+)
+}
+)
+
 railways = LineStrings(
     name = 'railways',
     fields = (
         ('tunnel', Bool()),
         ('bridge', Bool()),
-        # ('ref', String()),
+        ('colour', String()),
         ('z_order', WayZOrder()),
     ),
-    mapping = {
+  mapping = {
         'railway': (
             'rail',
             'tram',
@@ -211,7 +228,11 @@ railways = LineStrings(
             'preserved',
             'funicular',
             'monorail',
-    )}
+    ),
+        'route': (
+'subway',
+'light_rail',
+)}
 )
 
 waterways = LineStrings(
@@ -252,7 +273,7 @@ transport_areas = Polygons(
             'station',
         ),
         'aeroway': (
-            'aerodrome',
+            'aerodome',
             'terminal',
             'helipad',
             'apron',
@@ -360,8 +381,109 @@ landusages = Polygons(
         ),
 })
 
+shops = Points(
+    name='shops',
+    fields = (
+        ('service:bicycle:retail', Bool()),
+        ('service:bicycle:repair', Bool()),
+        ('service:bicycle:rental', Bool()),
+        ('service:bicycle:pump', Bool()),
+        ('service:bicycle:diy', Bool()),
+        ('service:bicycle:cleaning', Bool()),
+        ('service:bicycle:second_hand', Bool()),
+        ('service:copy', Bool()),
+        ('service:fax', Bool()),
+        ('service:phone', Bool()),
+        ('service:print', Bool()),
+        ('service:press', Bool()),
+        ('service:prepress', Bool()),
+        ('name', String()),
+        ('produce', String()),
+        ('self_service', Bool()),
+    ),
+    mapping = {
+        'shop': (
+            'bicycle',
+            'books',
+            'car_repair',
+            'copyshop',
+            'convenience',
+            'farm',
+            'laundry',
+            'outdoor',
+            'supermarket',
+        ),
+})
+tourism = Points(
+    name='tourism',
+    fields = (
+        ('name', String()),
+        ('zoo', String()),
+        ('castle_type', String()),
+    ),
+    mapping = {
+        'tourism': (
+            'zoo',
+            'information',
+            'gallery',
+            'museum',
+        ),
+        'historic': (
+         'battlefield',
+'memorial',
+'castle',
+        ),
+
+})
+manmade = Points(
+    name='manmade',
+    fields = (
+        ('name', String()),
+        ('operator', String()),
+        ('surveillance', String()),
+        ('tower:type', String()),
+    ),
+    mapping = {
+        'man_made': (
+            'crane',
+            'flagpole',
+            'lighthouse',
+            'surveillance',
+            'tower',
+        ),
+})
+power = Points(
+    name='power',
+    fields = (
+        ('generator:source', String()),
+        ('power_source', String()),
+    ),
+    mapping = {
+        'power': (
+            'generator',
+            ),
+})
+info = Points(
+    name='info',
+    mapping = {
+        'information': (
+            'office',
+            'terminal',
+            'audioguide',
+            'guidepost',
+            'map',
+            'tactile_map',
+            'tactile_model',
+            'board',
+        ),
+})
 amenities = Points(
     name='amenities',
+    fields = (
+        ('park_ride', String()),
+        ('religion', String()),
+        ('denomination', String()),
+    ),
     mapping = {
         'amenity': (
             'university',
@@ -372,9 +494,35 @@ amenities = Points(
             'fire_station',
             'police',
             'townhall',
+            'college',
+            'kindergarten',
+            'preschool',
+            'veterinary',
+            'doctors',
+            'pharmacy',
+            'bicycle_parking',
+            'parking',
+            'car_rental',
+            'car_sharing',
+            'car_wash',
+            'ferry_terminal',
+            'grit_bin',
+            'taxi',
+            'atm',
+            'bank',
+            'courthouse',
+            'place_of_worship',
+            'post_office',
+            'public_building',
+            'post_box',
+            'restaurant',
+            'pub',
+            'bar',
+            'cafe',
+            'ice_cream',
+            'toilets',
         ),
 })
-
 motorways_gen1 = GeneralizedTable(
     name = 'motorways_gen1',
     tolerance = meter_to_mapunit(50.0),
