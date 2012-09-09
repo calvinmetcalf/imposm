@@ -1,0 +1,21 @@
+function(doc, req){
+
+var xyz=function(zz,xx,yy){
+		var lng = function(x,z) {
+	  		return (x/Math.pow(2,z)*360-180);
+	 	}
+	 	var lat = function(y,z) {
+	  		var n=Math.PI-2*Math.PI*y/Math.pow(2,z);
+	  		return (180/Math.PI*Math.atan(0.5*(Math.exp(n)-Math.exp(-n))));
+	 	}
+	 var out=[lng(xx,zz),lat(yy+1,zz),lng(xx+1,zz),lat(yy,zz)]
+	 return out.join(",");
+	}
+
+	var loc = '../../../../json?mapping_name='+req.query.base+'&bbox='+xyz(parseInt(req.query.z),parseInt(req.query.x),parseInt(req.query.y));
+
+  	return {'code': 302, 'body': 'See other', 'headers': {'Location': loc}};
+ 
+}
+
+
