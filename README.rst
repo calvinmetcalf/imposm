@@ -1,6 +1,6 @@
 version for geocouch
 
-couch app portion in branch called "couch app"
+design doc portion split out into folder called "couch app"
 
 It is developed and supported by `Omniscale <http://omniscale.com>`_, runs on
 Linux or Mac OS X and is released as open source under the `Apache Software
